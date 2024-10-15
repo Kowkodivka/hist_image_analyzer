@@ -1,5 +1,3 @@
-import os
-import re
 import cv2
 import numpy as np
 
@@ -34,26 +32,23 @@ def remove_background(image):
     return result
 
 
-def process_images(directory_path, output_directory, regex_pattern):
-    os.makedirs(output_directory, exist_ok=True)
-    
+def process_images(images):
     max_width = 0
     max_height = 0
     cropped_images = []
-    filenames = [f for f in os.listdir(directory_path) if re.match(regex_pattern, f)]
+    result = []
 
-    for filename in filenames:
-        image_path = os.path.join(directory_path, filename)
-        original_image = cv2.imread(image_path)
-        image = remove_background(original_image)
+    for image in images:
+        image_bg_rmd = remove_background(image)
         
-        if image is not None:
-            h, w = image.shape[:2]
+        if image_bg_rmd is not None:
+            h, w = image_bg_rmd.shape[:2]
             max_width = max(max_width, w)
             max_height = max(max_height, h)
-            cropped_images.append((image, filename))
+            cropped_images.append(image_bg_rmd)
     
-    for image, filename in cropped_images:
-        resized_image = resize_image(image, max_width, max_height)
-        save_path = os.path.join(output_directory, f'processed_{os.path.splitext(filename)[0]}.png')
-        cv2.imwrite(save_path, resized_image)
+    for image_bg_rmd in cropped_images:
+        resized_image = resize_image(image_bg_rmd, max_width, max_height)
+        result.append(resized_image)
+
+    return result
