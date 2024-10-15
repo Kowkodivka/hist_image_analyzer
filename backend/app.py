@@ -9,7 +9,6 @@ from fastapi import FastAPI, File, UploadFile
 
 app = FastAPI()
 
-# find /home/kowkodivka/Документы/hist_image_analyzer/photo/raw -type f -print0 | xargs -0 -I {} curl -X POST -F "files=@{}" http://127.0.0.1:8000/model
 
 @app.post('/model')
 async def model(files: List[UploadFile] = File(...)):
