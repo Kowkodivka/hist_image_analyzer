@@ -1,0 +1,44 @@
+{
+  "name": "hist-image-analyzer",
+  "version": "0.0.1",
+  "description": "Ready-to-use software for three-dimensional reconstruction and automated semi-quantitative analysis of histological images.",
+  "main": "dist/index.js",
+  "type": "module",
+  "scripts": {
+    "nodemon": "nodemon",
+    "dev": "rollup -c -w",
+    "start": "npm run compile && electron .",
+    "start:svelte": "rollup -c & npm run compile && electron .",
+    "compile": "tsc"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Kowkodivka/hist_image_analyzer.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Kowkodivka/hist_image_analyzer/issues"
+  },
+  "homepage": "https://github.com/Kowkodivka/hist_image_analyzer#readme",
+  "devDependencies": {
+    "@rollup/plugin-commonjs": "^28.0.1",
+    "@rollup/plugin-node-resolve": "^15.3.0",
+    "@rollup/plugin-terser": "^0.4.4",
+    "@rollup/plugin-typescript": "^12.1.1",
+    "@tsconfig/svelte": "^5.0.4",
+    "electron": "^33.0.1",
+    "nodemon": "^3.1.7",
+    "rollup": "^4.24.0",
+    "rollup-plugin-copy": "^3.5.0",
+    "rollup-plugin-css-only": "^4.5.2",
+    "rollup-plugin-livereload": "^2.0.5",
+    "rollup-plugin-svelte": "^7.2.2",
+    "svelte": "^4.2.19",
+    "svelte-check": "^4.0.5",
+    "svelte-preprocess": "^6.0.3",
+    "terser": "^5.36.0",
+    "tslib": "^2.8.0",
+    "typescript": "^5.6.3"
+  }
+}
