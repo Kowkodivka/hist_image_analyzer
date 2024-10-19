@@ -15,8 +15,8 @@ const urlPreload = path.join(__dirname, "preload.js");
 async function createMainWindow() {
   const options = {
     title: appName,
-    width: 800,
-    height: 400,
+    width: 1080,
+    height: 720,
     show: false,
     webPreferences: {
       nodeIntegration: false,
@@ -26,7 +26,7 @@ async function createMainWindow() {
   };
 
   window = new BrowserWindow(options);
-  window.loadURL(urlPage);
+  window.loadFile(urlPage);
   window.once("ready-to-show", () => {
     window.show();
   });
