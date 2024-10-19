@@ -1,1 +1,3 @@
-// Возможность загружать бекенд раньше приложения
+import { generateContextBridge } from "./IPC/logic/contextBridge";
+
+generateContextBridge([]);
