@@ -44,6 +44,7 @@
     "typescript": "^5.6.3"
   },
   "dependencies": {
-    "three": "^0.169.0"
+    "three": "^0.169.0",
+    "three-addons": "^1.2.0"
   }
 }
