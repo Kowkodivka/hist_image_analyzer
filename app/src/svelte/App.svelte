@@ -1,76 +1,90 @@
 <script>
-  import { onMount } from 'svelte';
-  import * as THREE from 'three';
-  import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+  import { onMount } from 'svelte'
+  import * as THREE from 'three'
+  import { OrbitControls } from 'three/addons/controls/OrbitControls.js'
 
-  let canvasRef;
-  let scene, camera, renderer, raycaster, cube, mouse, controls;
+  const canvasRatio = 0.65
+
+  let testModel = {
+    voxels: [[0, 0, 0, [255, 255, 255]], [1, 0, 0, [255, 0, 0]], [1, 1, 0, [0, 255, 0]]],
+    data: {}
+  }
+
+  let canvasRef
+  let scene, camera, renderer, raycaster, mouse, controls
+  let voxelsData = []
+  let textData = []
 
   onMount(() => {
-    const canvas = canvasRef;
-    const { width, height } = canvas.getBoundingClientRect();
+    const canvas = canvasRef
+    const { width, height } = canvas.getBoundingClientRect()
 
-    scene = new THREE.Scene();
-    camera = new THREE.PerspectiveCamera(75, width / height, 0.1, 1000);
-    renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
-    renderer.setSize(width, height);
+    scene = new THREE.Scene()
+    camera = new THREE.PerspectiveCamera(75, width / height, 0.1, 1000)
+    renderer = new THREE.WebGLRenderer({ canvas, antialias: true })
+    renderer.setSize(width, height)
 
-    controls = new OrbitControls(camera, renderer.domElement);
-    controls.enableDamping = true;
-    controls.dampingFactor = 0.05;
-    controls.rotateSpeed = 0.5;
-    controls.enablePan = true;
-    controls.minDistance = 1;
-    controls.maxDistance = 10;
+    controls = new OrbitControls(camera, renderer.domElement)
+    controls.enableDamping = true
+    controls.dampingFactor = 0.05
+    controls.rotateSpeed = 0.5
+    controls.enablePan = true
+    controls.minDistance = 1
+    controls.maxDistance = 100
 
-    const geometry = new THREE.BoxGeometry(1, 1, 1);
-    const material = new THREE.MeshBasicMaterial({ color: '#fff' });
-    cube = new THREE.Mesh(geometry, material);
-    scene.add(cube);
+    camera.position.z = 5
 
-    camera.position.z = 5;
-
-    raycaster = new THREE.Raycaster();
-    mouse = new THREE.Vector2();
+    raycaster = new THREE.Raycaster()
+    mouse = new THREE.Vector2()
 
     window.addEventListener('resize', () => {
-      const width = window.innerWidth * 0.65;
-      const height = window.innerHeight;
-      camera.aspect = width / height;
-      camera.updateProjectionMatrix();
-      renderer.setSize(width, height);
-    });
+      const width = window.innerWidth * canvasRatio
+      const height = window.innerHeight
+      camera.aspect = width / height
+      camera.updateProjectionMatrix()
+      renderer.setSize(width, height)
+    })
 
-    canvasRef.addEventListener('click', onClick, false);
+    canvasRef.addEventListener('click', onClick, false)
 
     function onClick(event) {
-      mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
-      mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+      mouse.x = (event.clientX / window.innerWidth) * 2 - 1
+      mouse.y = -(event.clientY / window.innerHeight) * 2 + 1
 
-      raycaster.setFromCamera(mouse, camera);
-
-      const intersects = raycaster.intersectObjects([cube]);
-
-      if (intersects.length > 0) {
-        console.log('Cube clicked!');
-      }
+      raycaster.setFromCamera(mouse, camera)
     }
+
+    voxelsData = testModel.voxels
+    textData = Object.values(testModel.data)
+
+    renderVoxels()
 
     function animate() {
-      requestAnimationFrame(animate);
-      controls.update();
-      renderer.render(scene, camera);
+      requestAnimationFrame(animate)
+      controls.update()
+      renderer.render(scene, camera)
     }
 
-    animate();
-  });
+    animate()
+  })
+
+  function renderVoxels() {
+    voxelsData.forEach((voxel) => {
+      const [x, y, z, rgb] = voxel
+      const geometry = new THREE.BoxGeometry(1, 1, 1)
+      const material = new THREE.MeshBasicMaterial({
+        color: new THREE.Color(`rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`),
+      })
+      const mesh = new THREE.Mesh(geometry, material)
+      mesh.position.set(x, y, z)
+      scene.add(mesh)
+    })
+  }
 </script>
 
 <div class="container">
-  <canvas id="model" bind:this={canvasRef}></canvas>
-  <div class="sidebar">
-    <p>This is a sidebar</p>
-  </div>
+  <canvas bind:this={canvasRef}></canvas>
+  <div class="sidebar"></div>
 </div>
 
 <style>
