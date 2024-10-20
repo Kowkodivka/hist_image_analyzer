@@ -1,7 +1,7 @@
 import path from "path";
 import { fileURLToPath } from "url";
 import { dirname } from "path";
-import { BrowserWindow, app } from "electron";
+import { BrowserWindow, app, shell } from "electron";
 
 let window: BrowserWindow;
 
@@ -18,17 +18,25 @@ async function createWindow() {
     width: 1080,
     height: 720,
     show: false,
+    autoHideMenuBar: true,
     webPreferences: {
       nodeIntegration: false,
       contextIsolation: true,
       preload: urlPreload,
+      sandbox: false,
     },
   };
 
   window = new BrowserWindow(options);
   window.loadFile(urlPage);
+
   window.once("ready-to-show", () => {
     window.show();
+  });
+
+  window.webContents.setWindowOpenHandler((details) => {
+    shell.openExternal(details.url);
+    return { action: "deny" };
   });
 }
 

@@ -34,7 +34,7 @@ function serve() {
 }
 
 export default {
-  input: "src/frontend/main.ts",
+  input: "src/svelte/main.ts",
   output: {
     sourcemap: !production,
     format: "iife",
@@ -56,7 +56,7 @@ export default {
     copy({
       targets: [
         {
-          src: "src/frontend/www/**/*",
+          src: "src/svelte/www/**/*",
           dest: "dist/www",
         },
       ],
@@ -67,7 +67,7 @@ export default {
     }),
     commonjs(),
     typescript({
-      tsconfig: "src/frontend/tsconfig.json",
+      tsconfig: "src/svelte/tsconfig.json",
       sourceMap: !production,
       inlineSources: !production,
     }),

@@ -8,7 +8,7 @@
     "nodemon": "nodemon",
     "dev": "rollup -c -w",
     "start": "npm run compile && electron .",
-    "start:svelte": "rollup -c & npm run compile && electron .",
+    "start:svelte": "rollup -c && npm run compile && electron .",
     "compile": "tsc"
   },
   "repository": {

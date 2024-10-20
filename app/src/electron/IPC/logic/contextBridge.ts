@@ -32,14 +32,12 @@ function getContextBridge(obj: APIChannels): APIContextBridge {
 
   return {
     send: (channel: string, data: any) => {
-      // whitelist channels
       if (validSendChannel.includes(channel)) {
         ipcRenderer.send(channel, data);
       }
     },
     receive: (channel: string, func: (arg0: any) => void) => {
       if (validReceiveChannel.includes(channel)) {
-        // Deliberately strip event as it includes `sender`
         ipcRenderer.on(channel, (event, ...args: [any]) => {
           func(...args);
         });
