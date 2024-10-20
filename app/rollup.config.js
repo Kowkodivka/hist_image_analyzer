@@ -14,7 +14,7 @@ const production = !process.env.ROLLUP_WATCH;
 function serve() {
   let server;
 
-  function exit() {
+  function toExit() {
     if (server) server.kill(0);
   }
 
@@ -27,8 +27,8 @@ function serve() {
         shell: true,
       });
 
-      process.on("SIGTERM", exit);
-      process.on("exit", exit);
+      process.on("SIGTERM", toExit);
+      process.on("exit", toExit);
     },
   };
 }
@@ -39,7 +39,7 @@ export default {
     sourcemap: !production,
     format: "iife",
     name: "app",
-    file: "dist/www/build/bundle.js",
+    file: "dist/public/build/bundle.js",
   },
   plugins: [
     svelte({
@@ -56,8 +56,8 @@ export default {
     copy({
       targets: [
         {
-          src: "src/svelte/www/**/*",
-          dest: "dist/www",
+          src: "src/svelte/public/**/*",
+          dest: "dist/public",
         },
       ],
     }),

@@ -11,6 +11,6 @@
     "skipLibCheck": true,
     "lib": ["ES2023", "dom"]
   },
-  "exclude": ["node_modules", "dist/www", "out/**", "src/svelte/**"],
+  "exclude": ["node_modules", "dist/public", "out/**", "src/svelte/**"],
   "include": ["src/electron/**/*"]
 }

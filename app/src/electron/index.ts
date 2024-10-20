@@ -9,7 +9,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 const appName = "Hist Image Analyzer";
-const urlPage = path.join(__dirname, "www", "index.html");
+const urlPage = path.join(__dirname, "public", "index.html");
 const urlPreload = path.join(__dirname, "preload.js");
 
 async function createWindow() {
@@ -18,12 +18,10 @@ async function createWindow() {
     width: 1080,
     height: 720,
     show: false,
-    autoHideMenuBar: true,
     webPreferences: {
       nodeIntegration: false,
       contextIsolation: true,
       preload: urlPreload,
-      sandbox: false,
     },
   };
 
