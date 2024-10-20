@@ -29,6 +29,8 @@
     "@tsconfig/svelte": "^5.0.4",
     "electron": "^33.0.1",
     "nodemon": "^3.1.7",
+    "prettier": "^3.3.3",
+    "prettier-plugin-svelte": "^3.2.7",
     "rollup": "^4.24.0",
     "rollup-plugin-copy": "^3.5.0",
     "rollup-plugin-css-only": "^4.5.2",
@@ -40,5 +42,8 @@
     "terser": "^5.36.0",
     "tslib": "^2.8.0",
     "typescript": "^5.6.3"
+  },
+  "dependencies": {
+    "three": "^0.169.0"
   }
 }
