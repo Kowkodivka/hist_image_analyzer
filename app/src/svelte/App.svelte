@@ -2,26 +2,40 @@
   import { onMount } from 'svelte'
   import * as THREE from 'three'
   import { OrbitControls } from 'three/addons/controls/OrbitControls.js'
+  import { OBJLoader } from 'three/addons/loaders/OBJLoader.js'
 
   const canvasRatio = 0.65
 
-  let testModel = {
-    voxels: [[0, 0, 0, [255, 255, 255]], [1, 0, 0, [255, 0, 0]], [1, 1, 0, [0, 255, 0]]],
-    data: {}
-  }
+  let path = '/home/kowkodivka/Документы/hist_image_analyzer/backend/output.obj'
 
   let canvasRef
-  let scene, camera, renderer, raycaster, mouse, controls
-  let voxelsData = []
-  let textData = []
+  let loader, scene, camera, renderer, raycaster, mouse, controls
 
   onMount(() => {
     const canvas = canvasRef
     const { width, height } = canvas.getBoundingClientRect()
 
     scene = new THREE.Scene()
+    scene.background = new THREE.Color(0x222222)
+
+    loader = new OBJLoader()
+    loader.load(
+      path,
+      (model) => {
+        model.position.set(0, 0, 0)
+        scene.add(model)
+      },
+      (xhr) => {
+        console.log((xhr.loaded / xhr.total) * 100 + '% loaded')
+      },
+      (error) => {
+        console.log('An error happened: ' + error)
+      }
+    )
+
     camera = new THREE.PerspectiveCamera(75, width / height, 0.1, 1000)
-    renderer = new THREE.WebGLRenderer({ canvas, antialias: true })
+
+    renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true })
     renderer.setSize(width, height)
 
     controls = new OrbitControls(camera, renderer.domElement)
@@ -54,11 +68,6 @@
       raycaster.setFromCamera(mouse, camera)
     }
 
-    voxelsData = testModel.voxels
-    textData = Object.values(testModel.data)
-
-    renderVoxels()
-
     function animate() {
       requestAnimationFrame(animate)
       controls.update()
@@ -67,19 +76,6 @@
 
     animate()
   })
-
-  function renderVoxels() {
-    voxelsData.forEach((voxel) => {
-      const [x, y, z, rgb] = voxel
-      const geometry = new THREE.BoxGeometry(1, 1, 1)
-      const material = new THREE.MeshBasicMaterial({
-        color: new THREE.Color(`rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`),
-      })
-      const mesh = new THREE.Mesh(geometry, material)
-      mesh.position.set(x, y, z)
-      scene.add(mesh)
-    })
-  }
 </script>
 
 <div class="container">
